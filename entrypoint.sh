@@ -56,11 +56,11 @@ conjur_authn() {
 		if [[ -n "$INPUT_CERTIFICATE" ]]; then
 			# Authenticate and receive session token from Conjur - encode Base64
 			echo "::debug Authenticating with certificate"
-            token=$(curl --cacert "conjur_$INPUT_ACCOUNT.pem" --data "$INPUT_API_KEY" "$INPUT_URL/authn/$INPUT_ACCOUNT/$hostId/authenticate" --header "Content-Type: application/x-www-form-urlencoded" --header "Accept-Encoding: base64")
+            token=$(curl --cacert "conjur_$INPUT_ACCOUNT.pem" --data "$INPUT_API_KEY" "$INPUT_URL/authn/$INPUT_ACCOUNT/$hostId/authenticate" --header "Content-Type: application/x-www-form-urlencoded" --header "Accept-Encoding: base64" | base64 | tr -d '[:space:]')
 		else
 			# Authenticate and receive session token from Conjur - encode Base64
             echo "::debug Authenticating without certificate"
-			token=$(curl --request POST --data "$INPUT_API_KEY" "$INPUT_URL/authn/$INPUT_ACCOUNT/$hostId/authenticate" --header "Content-Type: application/x-www-form-urlencoded" --header "Accept-Encoding: base64")
+			token=$(curl --request POST --data "$INPUT_API_KEY" "$INPUT_URL/authn/$INPUT_ACCOUNT/$hostId/authenticate" --header "Content-Type: application/x-www-form-urlencoded" --header "Accept-Encoding: base64" | base64 | tr -d '[:space:]')
 		fi
 	fi
 }
